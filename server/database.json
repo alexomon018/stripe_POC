@@ -1,0 +1,16 @@
+{
+  "transactions": [
+    {
+      "Amount": 300,
+      "StripeCustomerId": null,
+      "Created": "2023-04-12T12:00:45.000Z",
+      "Id": "pi_3Mw2LxGc6iCAjOrP1ADph443",
+      "Status": "succeeded",
+      "ChargeId": "ch_3Mw2LxGc6iCAjOrP1DiSxqCL",
+      "method": "card"
+    }
+  ],
+  "payouts": [],
+  "directDebits": [],
+  "customers": []
+}
