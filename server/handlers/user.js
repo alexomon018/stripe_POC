@@ -1,6 +1,5 @@
 export const saveCustomer = async (req, res) => {
   try {
-    console.log("body", req.body);
     const vals = req.body;
 
     const session = req.session || {};
@@ -9,7 +8,7 @@ export const saveCustomer = async (req, res) => {
     session.familyName = vals.familyName;
     session.dob = vals.dob;
     session.email = vals.email;
-    session.amount = vals.amount;
+    session.amount = vals.amount || 2500;
 
     session.customerId = `${pad(Math.random() * 1000, 4)}${pad(
       vals.dob.substring(0, 4),

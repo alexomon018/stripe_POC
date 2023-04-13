@@ -30,12 +30,16 @@ function Payment() {
       borderRadius: "6px",
     },
   };
+  const options = {
+    clientSecret,
+    appearance,
+  };
 
   return (
     <>
       <h1>Make an advanced rent payment</h1>
       {clientSecret && stripePromise && (
-        <Elements stripe={stripePromise} options={{ clientSecret, appearance }}>
+        <Elements stripe={stripePromise} options={options}>
           <CheckoutForm randomUser={randomUser} />
         </Elements>
       )}

@@ -55,10 +55,16 @@ const BookingFlow = () => {
     fetch("/saveCustomer", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(randomUser),
+      body: JSON.stringify({
+        givenName: randomUser ? randomUser.givenName : givenName,
+        familyName: randomUser ? randomUser.familyName : familyName,
+        dob: randomUser ? randomUser.dob : dob,
+        email: randomUser ? randomUser.email : email,
+        amount: amount,
+      }),
     }).then((r) => {
       if (r.status === 200) {
-        window.location.href = "/installments";
+        navigate("/installments");
       }
     });
   };
@@ -67,7 +73,7 @@ const BookingFlow = () => {
     <div>
       <header class="header">
         Complete your booking (
-        <a href="#" id="random" onClick={() => getRandomUser()}>
+        <a id="random" onClick={() => getRandomUser()}>
           random
         </a>
         )
@@ -150,7 +156,7 @@ const BookingFlow = () => {
         <button>
           <span id="button-text">Direct Debit Instalments</span>
         </button>
-        <button>
+        <button onClick={() => payInInstallments()}>
           <span id="button-text">Debit/Credit Instsalments</span>
         </button>
       </div>

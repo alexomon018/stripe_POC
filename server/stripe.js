@@ -5,7 +5,7 @@ env.config();
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-export const MakeUrlForAdvancedRent = async (customerId, amount) => {
+export const makeFullPayment = async (customerId, amount) => {
   const paymentIntent = await stripe.paymentIntents.create({
     amount: amount,
     currency: "gbp",
@@ -16,22 +16,12 @@ export const MakeUrlForAdvancedRent = async (customerId, amount) => {
 };
 export const MakeUrlForDirectDebit = async (customerId, amount) => {};
 
-export const MakeUrlForCardPayment = async (customerId, amount) => {
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: amount,
-    currency: "gbp",
-    payment_method_types: ["card"],
-  });
-
-  return paymentIntent;
-};
-
-export const CreateACustomer = async (paymentMethod, email) => {
+export const CreateACustomer = async (email, payment_method) => {
   const customer = await stripe.customers.create({
     email: email,
-    payment_method: paymentMethod,
+    payment_method: payment_method,
     invoice_settings: {
-      default_payment_method: paymentMethod,
+      default_payment_method: payment_method,
     },
   });
 
@@ -43,9 +33,11 @@ export const CreateASubscription = async (customerId) => {
     customer: customerId,
     items: [
       {
-        price: "price_1Mw3tkGc6iCAjOrPmVHa47K7",
+        price: "price_1MwMNlGc6iCAjOrPeWZkKzXc",
       },
     ],
+    payment_behavior: "default_incomplete",
+    payment_settings: { save_default_payment_method: "on_subscription" },
     expand: ["latest_invoice.payment_intent"],
   });
 

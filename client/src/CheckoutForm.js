@@ -49,15 +49,18 @@ export default function CheckoutForm({ randomUser }) {
     }
 
     setIsProcessing(true);
+    const { error: submitError } = await elements.submit();
+    if (submitError) {
+      setMessage(submitError.message);
+      return;
+    }
 
     const result = await stripe.createPaymentMethod({
       elements,
       params: {
-        payment_method_data: {
-          billing_details: {
-            name: `${randomUser?.givenName} ${randomUser?.familyName}`,
-            email: "email@email.com",
-          },
+        billing_details: {
+          name: `${randomUser?.givenName} ${randomUser?.familyName}`,
+          email: randomUser?.email,
         },
       },
     });
@@ -66,26 +69,20 @@ export default function CheckoutForm({ randomUser }) {
       setMessage(result.error.message);
       return;
     } else {
-      const res = await fetch("/instalments", {
+      const res = await fetch("/installments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          payment_method: result.paymentIntent.payment_method.id,
-          email: "email@email.com",
+          email: randomUser?.email,
+          payment_method: result.paymentMethod.id,
         }),
       });
 
-      console.log("res.data", res.data);
-
-      const { client_secret, status } = await res.json();
-
-      if (status === "requires_action") {
-        stripe.confirmCardPayment(client_secret).then((result) => {
-          if (result.error) {
-            setMessage(result.error.message);
-          } else {
-            setMessage("Payment successful!");
-          }
+      const { clientSecret, subscriptionStatus } = await res.json();
+      console.log("subscriptionStatus", subscriptionStatus);
+      if (subscriptionStatus === "requires_confirmation") {
+        stripe.confirmCardPayment(clientSecret, {
+          return_url: `${window.location.origin}/completion`,
         });
       } else {
         setMessage("Payment successful!");

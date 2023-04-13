@@ -1,7 +1,8 @@
 import { Router } from "express";
 import {
   makeSinglePayment,
-  makeInstalmentPayment,
+  makeInstallmentPayment,
+  getInstallmentPayment,
 } from "./handlers/payments.js";
 import { saveCustomer } from "./handlers/user.js";
 
@@ -13,9 +14,9 @@ router.post("/saveCustomer", saveCustomer);
 
 router.get("/singlepayment", makeSinglePayment);
 
-router.get("/installments");
+router.get("/installments", getInstallmentPayment);
 
-router.post("/installments", makeInstalmentPayment);
+router.post("/installments", makeInstallmentPayment);
 
 router.get("/completion", async (req, res) => {});
 
