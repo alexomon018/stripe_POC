@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
@@ -37,7 +36,6 @@ function Payment() {
 
   return (
     <>
-      <h1>Make an advanced rent payment</h1>
       {clientSecret && stripePromise && (
         <Elements stripe={stripePromise} options={options}>
           <CheckoutForm randomUser={randomUser} />

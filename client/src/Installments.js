@@ -5,7 +5,7 @@ import { useBooking } from "./bookingContext";
 import CheckoutForm from "./CheckoutForm";
 
 function Instalments() {
-  const { randomUser, amount } = useBooking();
+  const { randomUser } = useBooking();
   const [stripePromise, setStripePromise] = useState(null);
 
   useEffect(() => {
@@ -21,16 +21,20 @@ function Instalments() {
     appearance: {
       /*...*/
     },
-    amount: parseFloat(amount),
-    currency: "gbp",
+    amount: 350, //is a must for some reason it doesn't charge this amount first
+    currency: "usd",
     paymentMethodTypes: ["card"],
     paymentMethodCreation: "manual",
   };
 
   return (
-    <Elements stripe={stripePromise} options={options}>
-      <CheckoutForm randomUser={randomUser} />
-    </Elements>
+    <>
+      {stripePromise && (
+        <Elements stripe={stripePromise} options={options}>
+          <CheckoutForm randomUser={randomUser} />
+        </Elements>
+      )}
+    </>
   );
 }
 

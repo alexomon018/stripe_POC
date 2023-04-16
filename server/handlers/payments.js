@@ -2,6 +2,7 @@ import {
   makeFullPayment,
   CreateACustomer,
   CreateASubscription,
+  CreateATestClock,
 } from "../stripe.js";
 
 export const makeSinglePayment = async (req, res) => {
@@ -37,9 +38,11 @@ export const makeSinglePayment = async (req, res) => {
 };
 
 export const makeInstallmentPayment = async (req, res) => {
-  const { email, payment_method } = req.body;
+  const { email } = req.body;
 
-  const customer = await CreateACustomer(email, payment_method);
+  const testClock = await CreateATestClock();
+
+  const customer = await CreateACustomer(email, testClock);
 
   const subscription = await CreateASubscription(customer.id);
 

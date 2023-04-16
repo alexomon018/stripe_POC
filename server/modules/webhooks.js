@@ -1,6 +1,7 @@
 import express from "express";
 import { stripe } from "../stripe.js";
 import { SaveDatabase, database } from "./support.js";
+import { CreateASubscriptionSchedule } from "../stripe.js";
 
 export const setStripeWebhook = (app) => {
   app.post(
@@ -38,6 +39,10 @@ export const setStripeWebhook = (app) => {
 
           console.log("Customer was created!");
           break;
+        case "customer.subscription.created":
+          const subscriptionSession = event.data.object;
+          CreateASubscriptionSchedule(subscriptionSession);
+          res.sendStatus(200);
         default:
           return res.status(400).end();
       }
