@@ -5,7 +5,7 @@ import { useBooking } from "./bookingContext";
 import CheckoutForm from "./CheckoutForm";
 
 function Instalments() {
-  const { randomUser } = useBooking();
+  const { randomUser, amount } = useBooking();
   const [stripePromise, setStripePromise] = useState(null);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ function Instalments() {
     <>
       {stripePromise && (
         <Elements stripe={stripePromise} options={options}>
-          <CheckoutForm randomUser={randomUser} />
+          <CheckoutForm randomUser={randomUser} amount={amount} />
         </Elements>
       )}
     </>

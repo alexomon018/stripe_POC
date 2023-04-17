@@ -39,10 +39,12 @@ export const setStripeWebhook = (app) => {
 
           console.log("Customer was created!");
           break;
+
         case "customer.subscription.created":
           const subscriptionSession = event.data.object;
+          console.log("Subscription was created!");
           CreateASubscriptionSchedule(subscriptionSession);
-          res.sendStatus(200);
+          res.sendStatus(200).end();
         default:
           return res.status(400).end();
       }
